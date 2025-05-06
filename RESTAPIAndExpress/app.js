@@ -32,13 +32,28 @@ const courses = [
   },
 ];
 
-app.get("/", (req, res) => {
+const logger = (req, res, next) => {
+  console.log(`Logger1: ${req.method}: Request receive on ${req.url}`);
+  next();
+};
+
+const logger1 = (req, res, next) => {
+  console.log(`Logger2: ${req.method}: Request receive on ${req.url}`);
+  next();
+};
+
+const logger2 = (req, res, next) => {
+  console.log(`Logger3: ${req.method}: Request receive on ${req.url}`);
+  next();
+};
+
+app.get("/", [logger], (req, res) => {
   //Can we alter the req object -Yes
   console.log({ req });
   res.send("Hello World!");
 });
 
-app.get("/api/v1/courses", (req, res) => {
+app.get("/api/v1/courses", [logger, logger1, logger2], (req, res) => {
   //console.log(req.query); //request gives query object to access the query parameters
 
   res.send(courses);
