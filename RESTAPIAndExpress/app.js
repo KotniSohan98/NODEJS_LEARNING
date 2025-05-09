@@ -1,6 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 
 const app = express();
+app.use(express.json());
 
 const courses = [
   {
@@ -57,6 +59,18 @@ app.get("/api/v1/courses/:courseId", (req, res) => {
   res.send(courses[courseId]);
 });
 
-app.listen(3000, () => {
-  console.log("Server stared on port", 3000);
+app.post("/api/v1/courses", (req, res) => {
+  const course = req.body;
+  //Validation Checks
+
+  const id = courses.length + 1; //Ideally we shoud not use generate IDs like this in real world. It dhould be done in Db Level
+  course.id = id;
+  courses.push(course);
+  console.log(course);
+  res.send(course);
+});
+
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+  console.log("Server started on port", PORT);
 });
