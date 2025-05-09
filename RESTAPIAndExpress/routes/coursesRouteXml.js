@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { courses } = require("../models/coursesModels");
-router.use(express.json());
 
 router.get("/", (req, res) => {
   //console.log(req.query); //request gives query object to access the query parameters
