@@ -1,31 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const { courses } = require("../models/coursesModels");
+const {
+  getAllCourses,
+  getCourseById,
+  createCourse,
+} = require("../controllers/coursesController");
 router.use(express.json());
 
-router.get("/", (req, res) => {
-  //console.log(req.query); //request gives query object to access the query parameters
-
-  res.send(courses);
-});
-
+router.get("/", getAllCourses);
 //path params
-router.get("/:courseId", (req, res) => {
-  const courseId = parseInt(req.params.courseId); //req.params has path params
-  const course = courses[courseId];
-  if (!course) res.status(404).send({ message: "Course Not Found!" });
-  res.send(courses[courseId]);
-});
-
-router.post("/", (req, res) => {
-  const course = req.body;
-  //Validation Checks
-
-  const id = courses.length + 1; //Ideally we shoud not use generate IDs like this in real world. It dhould be done in Db Level
-  course.id = id;
-  courses.push(course);
-  console.log(course);
-  res.send(course);
-});
+router.get("/:courseId", getCourseById);
+router.post("/", createCourse);
 
 module.exports = router;
